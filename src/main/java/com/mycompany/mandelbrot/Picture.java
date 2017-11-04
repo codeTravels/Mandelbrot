@@ -3,6 +3,7 @@ package com.mycompany.mandelbrot;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.util.List;
 
 /**
  *
@@ -48,6 +49,7 @@ public class Picture extends javax.swing.JPanel
 
         this.image = new BufferedImage(N, N, BufferedImage.TYPE_INT_ARGB);
 
+        List<Color> colors = ColorMap.generateRandom();
         for (int column = 0; column < N; column++)
         {
             for (int row = 0; row < N; row++)
@@ -55,16 +57,15 @@ public class Picture extends javax.swing.JPanel
                 double x0 = xc - size / 2 + size * column / N;
                 double y0 = yc - size / 2 + size * row / N;
                 ComplexNumber z0 = new ComplexNumber(x0, y0);
-                int gray = max - mand(z0, max);
-                Color color = new Color(gray, gray, gray);
-//                System.out.println("color = " + color);
-                set(column, N - 1 - row, color);
+                int colorIndex = max - mand(z0, max);
+
+                setColor(column, N - 1 - row, colors.get(colorIndex));
             }
         }
         repaint();
     }
 
-    void set(int x, int y, Color color)
+    void setColor(int x, int y, Color color)
     {
         this.image.setRGB(x, y, color.getRGB());
     }
