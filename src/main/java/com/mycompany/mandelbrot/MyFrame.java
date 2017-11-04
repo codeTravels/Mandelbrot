@@ -12,8 +12,8 @@ public class MyFrame extends javax.swing.JFrame
      */
     public MyFrame()
     {
+        super("Mandelbrot App");
         initComponents();
-        setTitle("Mandelbrot App");
         setVisible(true);
     }
 
@@ -89,7 +89,7 @@ public class MyFrame extends javax.swing.JFrame
 
     private void submitButtonActionPerformed(java.awt.event.ActionEvent evt)//GEN-FIRST:event_submitButtonActionPerformed
     {//GEN-HEADEREND:event_submitButtonActionPerformed
-        picture1.setColors(options1.getInputOptions());
+        picture1.setInputOptions(options1.getInputOptions());
     }//GEN-LAST:event_submitButtonActionPerformed
 
     /**

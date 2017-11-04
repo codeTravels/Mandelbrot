@@ -23,7 +23,7 @@ public class Picture extends javax.swing.JPanel
     Picture(int N, int N0)
     {
         initComponents();
-        this.image = new BufferedImage(N, N0, BufferedImage.TYPE_INT_RGB);
+        this.image = new BufferedImage(N, N0, BufferedImage.TYPE_INT_ARGB);
     }
 
     @Override
@@ -36,12 +36,7 @@ public class Picture extends javax.swing.JPanel
         g.drawImage(image, x, y, this);
     }
 
-    void set(int x, int y, Color color)
-    {
-        this.image.setRGB(x, y, color.getRGB());
-    }
-
-    void setColors(InputOptions options)
+    void setInputOptions(InputOptions options)
     {
         System.out.println("options = " + options);
         double xc = options.getXc();
@@ -51,21 +46,27 @@ public class Picture extends javax.swing.JPanel
         int N = options.getN();   // create N-by-N image
         int max = options.getMax();   // maximum number of iterations
 
-        this.image = new BufferedImage(N, N, BufferedImage.TYPE_INT_RGB);
+        this.image = new BufferedImage(N, N, BufferedImage.TYPE_INT_ARGB);
 
-        for (int i = 0; i < N; i++)
+        for (int column = 0; column < N; column++)
         {
-            for (int j = 0; j < N; j++)
+            for (int row = 0; row < N; row++)
             {
-                double x0 = xc - size / 2 + size * i / N;
-                double y0 = yc - size / 2 + size * j / N;
+                double x0 = xc - size / 2 + size * column / N;
+                double y0 = yc - size / 2 + size * row / N;
                 ComplexNumber z0 = new ComplexNumber(x0, y0);
                 int gray = max - mand(z0, max);
                 Color color = new Color(gray, gray, gray);
-                set(i, N - 1 - j, color);
+//                System.out.println("color = " + color);
+                set(column, N - 1 - row, color);
             }
         }
         repaint();
+    }
+
+    void set(int x, int y, Color color)
+    {
+        this.image.setRGB(x, y, color.getRGB());
     }
 
     /**
@@ -82,7 +83,6 @@ public class Picture extends javax.swing.JPanel
         {
             if (z.abs() > 2.0)
             {
-//                System.out.println("t= "+t);
                 return t;
             }
             z = z.times(z).plus(z0);
